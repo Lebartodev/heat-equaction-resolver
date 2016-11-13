@@ -1,5 +1,7 @@
 package Model;
 
+import controller.BaseController;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,9 +10,10 @@ import java.util.List;
  */
 public class Solution {
 
-    public List<Point> solution;
+    private List<Point> solution;
+    BaseController controller;
 
-    public static double getSum(double x){
+    public double getSum(double x){
         double eps = 0.0001;
         double res = 0;
         double temp;
@@ -23,7 +26,7 @@ public class Solution {
         return res;
     }
 
-    public Solution(double t){
+    public void calculateSolution(double t){
         solution = new ArrayList<Point>();
         double a2 = Params.k/Params.c;
         double b2 = Params.alpha*2/(Params.c*Params.R);
@@ -34,9 +37,11 @@ public class Solution {
             Point p = new Point(j,U);
             solution.add(p);
         }
+        controller.onUpdatePoints(solution);
     }
+    public Solution(BaseController controller){
+        this.controller=controller;
 
-    public List<Point> getSolution(){
-        return solution;
-    }
+
+    };
 }

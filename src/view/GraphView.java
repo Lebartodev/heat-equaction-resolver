@@ -1,4 +1,8 @@
+package view;
+
 import Model.Point;
+import controller.BaseController;
+import controller.Controller;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -16,9 +20,9 @@ import java.util.List;
 public class GraphView implements BaseMainView {
     private BaseController controller;
 
-    //Должен создавать что-то типа new Controller(this); где this это BaseMainView
+    //Должен создавать что-то типа new Controller(this); где this это view.BaseMainView
     public GraphView() {
-        controller = new TestController(this);
+        controller = new Controller(this);
     }
 
     //Этот метод вызывается из контроллера
@@ -44,7 +48,6 @@ public class GraphView implements BaseMainView {
         frame.show();
     }
 
-    //Этот метод вызывается из контроллера
     public void updateGraph(List<Point> points) {
 
     }

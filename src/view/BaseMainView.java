@@ -1,3 +1,5 @@
+package view;
+
 import Model.Point;
 
 import java.util.List;
