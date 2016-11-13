@@ -1,4 +1,5 @@
 import Model.Point;
+import Model.Solution;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +10,15 @@ import java.util.List;
 public class TestController implements BaseController {
     private BaseMainView mainView;
 
-    public TestController(BaseMainView mainView) {
+    public TestController(BaseMainView mainView,double t) {
         this.mainView = mainView;
-        initPoints();
+        initPoints(t);
 
     }
-    private void initPoints(){
+    private void initPoints(double t){
+        Solution solution = new Solution(t);
         List<Point> points=new ArrayList<Point>();
-        for(float i=-10;i<10;i+=0.1){
-            points.add(new Point(i,func(i)));
-        }
+        points = solution.getSolution();
         mainView.createGraph(points);
     }
     private double func(float i){
