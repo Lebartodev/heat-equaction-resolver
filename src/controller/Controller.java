@@ -19,7 +19,7 @@ public class Controller implements BaseController {
     public Controller(BaseMainView view) {
         solution = new Solution(this);
         this.view = view;
-        updatePoints(0);
+        updatePoints(10);
 
     }
 
