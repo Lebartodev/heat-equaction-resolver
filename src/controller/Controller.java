@@ -19,9 +19,10 @@ public class Controller implements BaseController {
     public Controller(BaseMainView view) {
         solution = new Solution(this);
         this.view = view;
-        updatePoints(10);
+        updatePoints(0);
 
     }
+
 
     public void updatePoints(double t) {
         solution.calculateSolution(t);
@@ -29,6 +30,6 @@ public class Controller implements BaseController {
     }
 
     public void onUpdatePoints(List<Point> points) {
-        view.createGraph(points);
+        view.updateGraph(points);
     }
 }
