@@ -60,7 +60,7 @@ public class GraphView implements BaseMainView {
                 new JFrame("MinimalStaticChart");
         frame.setLayout(new VerticalLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        JSlider slider = new JSlider(0, 10000, 0);
+        JSlider slider = new JSlider(0, 10000, 1);
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
 
