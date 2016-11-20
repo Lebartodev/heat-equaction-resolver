@@ -16,8 +16,8 @@ public class Coeffs {
         return res;
     }
 
-    public static double getCosKX(int k, double x){
-        double res = Math.cos(k*x/Params.R);
+    public static double getCosKX(int k, double x,double R){
+        double res = Math.cos(k*x/R);
         return res;
     }
 

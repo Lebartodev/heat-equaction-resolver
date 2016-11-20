@@ -19,13 +19,19 @@ public class Controller implements BaseController {
     public Controller(BaseMainView view) {
         solution = new Solution(this);
         this.view = view;
-        updatePoints(0);
+            /*public static double c = 1.84;
+    public static double alpha = 0.005;
+    public static double k = 0.065;
+    public static double R = 25;
+    public static double Uenv = 0;
+    public static double T = 50;*/
+        updatePoints(0,0.005,1.84,25,0.065);
 
     }
 
 
-    public void updatePoints(double t) {
-        solution.calculateSolution(t);
+    public void updatePoints(double t,double alpha,double c,double R,double k) {
+        solution.calculateSolution(t,alpha,c,R,k);
 
     }
 
