@@ -26,13 +26,13 @@ public class Solution {
         return res;
     }
 
-    public void calculateSolution(double t,double alpha,double c,double R,double k) {
+    public void calculateSolution(double t,double alpha,double c,double R,double k,double eps) {
         solution = new ArrayList<Point>();
         int N;
         if(t==0)
-            N  = 10000;
+            N = 500;//getEvaluation(eps,1,R,k,c);
         else
-            N = getEvaluation(0.0001,t,R,k,c);
+            N = getEvaluation(eps,t,R,k,c);
         //double a2 = Params.k/Params.c;
         double b2 =alpha * 2 / (c * R);
         double i = Math.PI * R;
@@ -45,6 +45,7 @@ public class Solution {
 
         }
         controller.onUpdatePoints(solution);
+        controller.showN(N);
     }
 
     public Solution(BaseController controller) {

@@ -25,17 +25,21 @@ public class Controller implements BaseController {
     public static double R = 25;
     public static double Uenv = 0;
     public static double T = 50;*/
-        updatePoints(0,0.005,1.84,25,0.065);
+        updatePoints(0,0.005,1.84,25,0.065,0.0001);
 
     }
 
 
-    public void updatePoints(double t,double alpha,double c,double R,double k) {
-        solution.calculateSolution(t,alpha,c,R,k);
+    public void updatePoints(double t,double alpha,double c,double R,double k,double eps) {
+        solution.calculateSolution(t,alpha,c,R,k,eps);
 
     }
 
     public void onUpdatePoints(List<Point> points) {
         view.updateGraph(points);
+    }
+
+    public void showN(int n) {
+        view.onShow(n);
     }
 }

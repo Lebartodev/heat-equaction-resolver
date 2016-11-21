@@ -36,9 +36,10 @@ public class GraphView implements BaseMainView {
     private JTextField editalpha;
     private JTextField editK;
     private JTextField editR;
-    private JTextField editUenv;
-    private JTextField editT;
+    private JTextField editEps;
     private JSlider slider;
+    private JLabel labelN;
+
 
     DocumentListener editListener = new DocumentListener() {
         public void insertUpdate(DocumentEvent e) {
@@ -60,10 +61,10 @@ public class GraphView implements BaseMainView {
             double R = Double.parseDouble(editR.getText());
             double c = Double.parseDouble(editC.getText());
             double k = Double.parseDouble(editK.getText());
-            double Uenv = Double.parseDouble(editUenv.getText());
+            double eps = Double.parseDouble(editEps.getText());
             double alp = Double.parseDouble(editalpha.getText());
 
-            controller.updatePoints(t, alp, c, R, k);
+            controller.updatePoints(t, alp, c, R, k,eps);
         }
         catch (Exception e){
             System.out.println("Exception");
@@ -80,21 +81,20 @@ public class GraphView implements BaseMainView {
         editalpha = new JTextField();
         editC = new JTextField();
         editK = new JTextField();
-        editT = new JTextField();
-        editUenv = new JTextField();
+        labelN=new JLabel("");
+
+        editEps = new JTextField();
 
         editC.setText("1.84");
         editR.setText("25");
         editalpha.setText("0.005");
         editK.setText("0.065");
-        editUenv.setText("0");
-        editT.setText("50");
+        editEps.setText("0.0001");
         editC.getDocument().addDocumentListener(editListener);
         editR.getDocument().addDocumentListener(editListener);
         editalpha.getDocument().addDocumentListener(editListener);
         editK.getDocument().addDocumentListener(editListener);
-        editUenv.getDocument().addDocumentListener(editListener);
-        editT.getDocument().addDocumentListener(editListener);
+        editEps.getDocument().addDocumentListener(editListener);
     }
 
     //Этот метод вызывается из контроллера
@@ -126,14 +126,14 @@ public class GraphView implements BaseMainView {
         final JPanel panel2 = new JPanel();
 
         final JPanel panelR = new JPanel();
-        final JPanel panelUenv = new JPanel();
+        final JPanel panelEps = new JPanel();
         final JPanel panelT = new JPanel();
         final JPanel panelalpha = new JPanel();
         final JPanel panelC = new JPanel();
         final JPanel panelK = new JPanel();
 
         panelR.setLayout(new BoxLayout(panelR, BoxLayout.X_AXIS));
-        panelUenv.setLayout(new BoxLayout(panelUenv, BoxLayout.X_AXIS));
+        panelEps.setLayout(new BoxLayout(panelEps, BoxLayout.X_AXIS));
         panelT.setLayout(new BoxLayout(panelT, BoxLayout.X_AXIS));
         panelalpha.setLayout(new BoxLayout(panelalpha, BoxLayout.X_AXIS));
         panelC.setLayout(new BoxLayout(panelC, BoxLayout.X_AXIS));
@@ -143,19 +143,19 @@ public class GraphView implements BaseMainView {
         panelC.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelR.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panelT.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        panelUenv.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelEps.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelalpha.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //frame.setLayout(new VerticalLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        slider = new JSlider(0, 10000, 1);
+        slider = new JSlider(0, 1000, 1);
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
 
                 JSlider dd = (JSlider) e.getSource();
-                if (!dd.getValueIsAdjusting()) {
+               // if (!dd.getValueIsAdjusting()) {
                     updatePoints();
-                }
+                label.setText("t = "+dd.getValue());
+                //}
 
 
             }
@@ -163,8 +163,8 @@ public class GraphView implements BaseMainView {
 
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(0), new JLabel("0"));
-        labelTable.put(new Integer(5000), new JLabel("5000"));
-        labelTable.put(new Integer(10000), new JLabel("10000"));
+        labelTable.put(new Integer(500), new JLabel("500"));
+        labelTable.put(new Integer(1000), new JLabel("1000"));
         slider.setLabelTable(labelTable);
 
         slider.setPaintLabels(true);
@@ -176,6 +176,8 @@ public class GraphView implements BaseMainView {
         panel1.add(new ChartPanel(chart));
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        labelN.setHorizontalAlignment(SwingConstants.CENTER);
+        labelN.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panel1.add(panel2);
         //panel1.add(button1, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel2.add(panelR);
@@ -188,22 +190,22 @@ public class GraphView implements BaseMainView {
         panelalpha.add(new JLabel("Alpha:"));
         panelalpha.add(editalpha);
 
-        panelUenv.add(new JLabel("Uenv:"));
-        panelUenv.add(editUenv);
+        panelEps.add(new JLabel("eps:"));
+        panelEps.add(editEps);
         panelK.add(new JLabel("K:"));
         panelK.add(editK);
-        panelT.add(new JLabel("T:"));
-        panelT.add(editT);
 
 
         panel2.add(panelC);
         panel2.add(panelK);
         panel2.add(panelT);
         panel2.add(panelalpha);
-        panel2.add(panelUenv);
+        panel2.add(panelEps);
+        panel2.add(label);
 
 
         panel2.add(slider);
+        panel2.add(labelN);
 
         frame.add(panel1);
         frame.setSize(1000, 400);
@@ -224,5 +226,10 @@ public class GraphView implements BaseMainView {
             plot.setDataset(xyDataset);
         } else
             createGraph(points);
+    }
+
+    public void onShow(int n) {
+        labelN.setText("N = "+n);
+
     }
 }
