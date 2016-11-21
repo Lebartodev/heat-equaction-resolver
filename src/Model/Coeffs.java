@@ -5,10 +5,10 @@ package Model;
  */
 public class Coeffs {
 
-    public static double getA0(){
-        /*double res = 1/(Math.PI*Params.R)*(1-Params.Uenv)*Math.PI*Params.R;
-        return res;*/
-        return 1;
+    public static final double pointNumber = 400;
+
+    public static double getA0(double Uenv){
+        return 0.5-Uenv;
     }
 
     public static double getAk(int k){
@@ -16,8 +16,18 @@ public class Coeffs {
         return res;
     }
 
+    public static double getBk(int k, double Uenv){
+        double res = 2*Uenv*Math.cos(Math.PI*k)/(Math.PI*k);
+        return res;
+    }
+
     public static double getCosKX(int k, double x,double R){
         double res = Math.cos(k*x/R);
+        return res;
+    }
+
+    public static double getSinKX(int k, double x,double R){
+        double res = Math.sin(k*x/R);
         return res;
     }
 

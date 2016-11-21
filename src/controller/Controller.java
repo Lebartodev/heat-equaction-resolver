@@ -25,13 +25,13 @@ public class Controller implements BaseController {
     public static double R = 25;
     public static double Uenv = 0;
     public static double T = 50;*/
-        updatePoints(0,0.005,1.84,25,0.065,0.0001);
+        updatePoints(0,0.005,1.84,25,0.065,0.0001, 0);
 
     }
 
 
-    public void updatePoints(double t,double alpha,double c,double R,double k,double eps) {
-        solution.calculateSolution(t,alpha,c,R,k,eps);
+    public void updatePoints(double t,double alpha,double c,double R,double k,double eps, double Uenv) {
+        solution.calculateSolution(t,alpha,c,R,k,eps,Uenv);
 
     }
 

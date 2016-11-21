@@ -17,16 +17,16 @@ public class Solution {
     private List<Point> solution;
     BaseController controller;
 
-    public double getSum(double x, double t, int N,double k,double c,double R) {
+    public double getSum(double x, double t, int N,double k,double c,double R,double Uenv) {
         double a2 = k / c;
         //double eps = 0.00001;
         double res = 0;
         for(int i = 1;i<N;i+=2)
-            res+= Coeffs.getAk(i) * Coeffs.getCosKX(i, x,R) * Math.exp(-a2 * Math.pow((i / R), 2) * t);
+            res+= (Coeffs.getBk(i, Uenv)*Coeffs.getSinKX(i,x,R) + Coeffs.getAk(i) * Coeffs.getCosKX(i, x,R)) * Math.exp(-a2 * Math.pow((i / R), 2) * t);
         return res;
     }
 
-    public void calculateSolution(double t,double alpha,double c,double R,double k,double eps) {
+    public void calculateSolution(double t,double alpha,double c,double R,double k, double Uenv,double eps) {
         solution = new ArrayList<Point>();
         int N;
         if(t==0)
@@ -36,9 +36,9 @@ public class Solution {
         //double a2 = Params.k/Params.c;
         double b2 =alpha * 2 / (c * R);
         double i = Math.PI * R;
-        double step = 2 * Math.PI * R / 400;
+        double step = 2 * Math.PI * R / Coeffs.pointNumber;
         for (double j = -i; j <= i; j += step) {
-            double U = (0.5 + getSum(j, t, N,k,c,R)) * Math.exp(-b2 * t);
+            double U = (Coeffs.getA0(0) + getSum(j, t, N,k,c,R, Uenv)) * Math.exp(-b2 * t);
             Point p = new Point(j, U);
             solution.add(p);
             //System.out.println("U" + String.valueOf(U));
