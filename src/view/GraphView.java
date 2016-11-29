@@ -37,6 +37,7 @@ public class GraphView implements BaseMainView {
     private JTextField editK;
     private JTextField editR;
     private JTextField editEps;
+    private JTextField editUenv;
     private JSlider slider;
     private JLabel labelN;
 
@@ -63,8 +64,9 @@ public class GraphView implements BaseMainView {
             double k = Double.parseDouble(editK.getText());
             double eps = Double.parseDouble(editEps.getText());
             double alp = Double.parseDouble(editalpha.getText());
+            double  uenv = Double.parseDouble(editUenv.getText());
 
-            controller.updatePoints(t, alp, c, R, k,eps);
+            controller.updatePoints(t, alp, c, R, k,uenv,eps);
         }
         catch (Exception e){
             System.out.println("Exception");
@@ -84,17 +86,20 @@ public class GraphView implements BaseMainView {
         labelN=new JLabel("");
 
         editEps = new JTextField();
+        editUenv = new JTextField();
 
         editC.setText("1.84");
         editR.setText("25");
         editalpha.setText("0.005");
         editK.setText("0.065");
         editEps.setText("0.0001");
+        editUenv.setText("0");
         editC.getDocument().addDocumentListener(editListener);
         editR.getDocument().addDocumentListener(editListener);
         editalpha.getDocument().addDocumentListener(editListener);
         editK.getDocument().addDocumentListener(editListener);
         editEps.getDocument().addDocumentListener(editListener);
+        editUenv.getDocument().addDocumentListener(editListener);
     }
 
     //Этот метод вызывается из контроллера
@@ -118,7 +123,7 @@ public class GraphView implements BaseMainView {
         XYPlot plot = (XYPlot) chart.getPlot();
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setAxisLineVisible(true);
-        rangeAxis.setRange(0, 1.2);
+       // rangeAxis.setRange(0, 5);
         JFrame frame =
                 new JFrame("MinimalStaticChart");
         //
@@ -131,6 +136,7 @@ public class GraphView implements BaseMainView {
         final JPanel panelalpha = new JPanel();
         final JPanel panelC = new JPanel();
         final JPanel panelK = new JPanel();
+        final JPanel panelUenv = new JPanel();
 
         panelR.setLayout(new BoxLayout(panelR, BoxLayout.X_AXIS));
         panelEps.setLayout(new BoxLayout(panelEps, BoxLayout.X_AXIS));
@@ -138,9 +144,11 @@ public class GraphView implements BaseMainView {
         panelalpha.setLayout(new BoxLayout(panelalpha, BoxLayout.X_AXIS));
         panelC.setLayout(new BoxLayout(panelC, BoxLayout.X_AXIS));
         panelK.setLayout(new BoxLayout(panelK, BoxLayout.X_AXIS));
+        panelUenv.setLayout(new BoxLayout(panelUenv, BoxLayout.X_AXIS));
         panel1.setLayout(new GridLayout(1, 2, -1, -1));
         panel2.setLayout(new VerticalLayout());
         panelC.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelUenv.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelK.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelR.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelEps.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -186,13 +194,14 @@ public class GraphView implements BaseMainView {
 
         panelC.add(new JLabel("C:"));
         panelC.add(editC);
-
-        panelalpha.add(new JLabel("Alpha:"));
+        panelUenv.add(new JLabel("U env: "));
+        panelUenv.add(editUenv);
+        panelalpha.add(new JLabel("Alpha: "));
         panelalpha.add(editalpha);
 
-        panelEps.add(new JLabel("eps:"));
+        panelEps.add(new JLabel("eps: "));
         panelEps.add(editEps);
-        panelK.add(new JLabel("K:"));
+        panelK.add(new JLabel("K: "));
         panelK.add(editK);
 
 
@@ -201,6 +210,7 @@ public class GraphView implements BaseMainView {
         panel2.add(panelT);
         panel2.add(panelalpha);
         panel2.add(panelEps);
+       // panel2.add(panelUenv);
         panel2.add(label);
 
 
