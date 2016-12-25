@@ -32,7 +32,7 @@ public class Controller implements BaseController {
 
     public void updatePoints(double t,double alpha,double c,double R,double k, double Uenv,double eps,boolean needQuality) {
         solution.calculateSolution(t,alpha,c,R,k,Uenv,eps,needQuality);
-        System.out.println(t);
+        System.out.println("t = "+ t);
     }
 
     public void onUpdatePoints(List<Point> points) {
