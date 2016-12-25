@@ -21,6 +21,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -178,8 +180,8 @@ public class GraphView implements BaseMainView {
 
             }
         });
-        qualityBox.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+        qualityBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
                 updatePoints();
             }
         });
