@@ -48,8 +48,9 @@ public class Solution {
                 Point p = new Point(j, U);
                 solution.add(p);
                 if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
-                    System.out.println("Ne = " + N);
+                    System.out.println("x = " + j + " Ne = " + N);
             }
+            System.out.println("------------");
             controller.onUpdatePoints(solution);
             controller.showN(N);
         }
@@ -61,6 +62,7 @@ public class Solution {
                 //if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
                     //System.out.println(n);
             }
+            System.out.println("-------------");
             controller.onUpdatePoints(solution);
             controller.showN(n);
         }
