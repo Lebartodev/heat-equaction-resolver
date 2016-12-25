@@ -155,7 +155,7 @@ public class GraphView implements BaseMainView {
         panelalpha.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //frame.setLayout(new VerticalLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        slider = new JSlider(0, 1000, 1);
+        slider = new JSlider(0, 1000, 0);
         slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
 
