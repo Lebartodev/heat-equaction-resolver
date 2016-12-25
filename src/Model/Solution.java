@@ -25,7 +25,7 @@ public class Solution {
         return res;
     }
 
-    public void calculateSolution(double t,double alpha,double c,double R,double k, double Uenv,double eps) {
+    public void calculateSolution(double t,double alpha,double c,double R,double k, double Uenv,double eps,boolean needEvaluation) {
         solution = new ArrayList<Point>();
         int N=0;
         int n;
@@ -44,7 +44,10 @@ public class Solution {
         double i = Math.PI * R;
         double step = 2 * Math.PI * R / Coeffs.pointNumber;
         for (double j = -i; j <= i; j += step) {
+           // if(needEvaluation)
             N = getEvaluationQuality(n,alpha,R,c,Uenv,t,k,eps,j);
+            //else
+           //     N = getEvaluation(n,alpha,R,c,Uenv,t);
             double U = (Coeffs.getA0(0) + getSum(j, t, N,k,c,R, Uenv, alpha)) * Math.exp(-b2 * t);
             Point p = new Point(j, U);
             solution.add(p);

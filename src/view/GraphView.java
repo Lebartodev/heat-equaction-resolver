@@ -7,6 +7,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.ColorBlock;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
@@ -38,6 +39,7 @@ public class GraphView implements BaseMainView {
     private JTextField editR;
     private JTextField editEps;
     private JTextField editUenv;
+    private JCheckBox qualityBox;
     private JSlider slider;
     private JLabel labelN;
 
@@ -65,8 +67,10 @@ public class GraphView implements BaseMainView {
             double eps = Double.parseDouble(editEps.getText());
             double alp = Double.parseDouble(editalpha.getText());
             double  uenv = Double.parseDouble(editUenv.getText());
+            boolean q = qualityBox.isSelected();
 
-            controller.updatePoints(t, alp, c, R, k,uenv,eps);
+
+            controller.updatePoints(t, alp, c, R, k,uenv,eps,q);
         }
         catch (Exception e){
             System.out.println("Exception");
@@ -84,7 +88,7 @@ public class GraphView implements BaseMainView {
         editC = new JTextField();
         editK = new JTextField();
         labelN=new JLabel("");
-
+        qualityBox=new JCheckBox("Quality");
         editEps = new JTextField();
         editUenv = new JTextField();
 
@@ -121,6 +125,9 @@ public class GraphView implements BaseMainView {
                         PlotOrientation.VERTICAL,
                         true, true, true);
         XYPlot plot = (XYPlot) chart.getPlot();
+        plot.setBackgroundPaint(Color.white);
+        plot.setDomainGridlinePaint(Color.GRAY);
+        plot.setRangeGridlinePaint(Color.GRAY);
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setAxisLineVisible(true);
        // rangeAxis.setRange(0, 5);
@@ -136,6 +143,7 @@ public class GraphView implements BaseMainView {
         final JPanel panelalpha = new JPanel();
         final JPanel panelC = new JPanel();
         final JPanel panelK = new JPanel();
+        final JPanel panelQ = new JPanel();
         final JPanel panelUenv = new JPanel();
 
         panelR.setLayout(new BoxLayout(panelR, BoxLayout.X_AXIS));
@@ -145,6 +153,7 @@ public class GraphView implements BaseMainView {
         panelC.setLayout(new BoxLayout(panelC, BoxLayout.X_AXIS));
         panelK.setLayout(new BoxLayout(panelK, BoxLayout.X_AXIS));
         panelUenv.setLayout(new BoxLayout(panelUenv, BoxLayout.X_AXIS));
+        panelQ.setLayout(new BoxLayout(panelQ, BoxLayout.X_AXIS));
         panel1.setLayout(new GridLayout(1, 2, -1, -1));
         panel2.setLayout(new VerticalLayout());
         panelC.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -153,6 +162,7 @@ public class GraphView implements BaseMainView {
         panelR.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelEps.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelalpha.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelQ.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //frame.setLayout(new VerticalLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         slider = new JSlider(0, 1000, 0);
@@ -160,10 +170,10 @@ public class GraphView implements BaseMainView {
             public void stateChanged(ChangeEvent e) {
 
                 JSlider dd = (JSlider) e.getSource();
-               // if (!dd.getValueIsAdjusting()) {
+                if (!dd.getValueIsAdjusting()) {
                     updatePoints();
                 label.setText("t = "+dd.getValue());
-                //}
+                }
 
 
             }
@@ -194,6 +204,7 @@ public class GraphView implements BaseMainView {
 
         panelC.add(new JLabel("C:"));
         panelC.add(editC);
+        panelQ.add(qualityBox);
         panelUenv.add(new JLabel("U env: "));
         panelUenv.add(editUenv);
         panelalpha.add(new JLabel("Alpha: "));
@@ -210,7 +221,7 @@ public class GraphView implements BaseMainView {
         panel2.add(panelT);
         panel2.add(panelalpha);
         panel2.add(panelEps);
-       // panel2.add(panelUenv);
+        panel2.add(panelQ);
         panel2.add(label);
 
 
@@ -234,6 +245,9 @@ public class GraphView implements BaseMainView {
             xyDataset = new XYSeriesCollection(series);
 
             plot.setDataset(xyDataset);
+            plot.setBackgroundPaint(Color.white);
+            plot.setDomainGridlinePaint(Color.GRAY);
+            plot.setRangeGridlinePaint(Color.GRAY);
         } else
             createGraph(points);
     }
