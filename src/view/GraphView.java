@@ -178,6 +178,11 @@ public class GraphView implements BaseMainView {
 
             }
         });
+        qualityBox.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                updatePoints();
+            }
+        });
 
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(0), new JLabel("0"));
