@@ -16,6 +16,7 @@ public class Solution {
     BaseController controller;
 
     public static double getSum(double x, double t, int N, double k, double c, double R, double Uenv, double alpha) {
+
         double a2 = k / c;
         double b2 = alpha * 2 / (c * R);
         //double eps = 0.00001;
@@ -26,46 +27,49 @@ public class Solution {
     }
 
     public void calculateSolution(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needEvaluation) {
+        System.out.println("--------------------");
         solution = new ArrayList<Point>();
         int N = 0;
         int n;
         if (t == 0) {
             t = 0.1;
             n = getEvaluation(eps, t, R, k, c, alpha);
-            System.out.println("Nt = " + n);
         } else {
             t++;
             n = getEvaluation(eps, t, R, k, c, alpha);
-            System.out.println("Nt = " + n);
         }
-            double b2 = alpha * 2 / (c * R);
-            double i = Math.PI * R;
-            double step = 2 * Math.PI * R / Coeffs.pointNumber;
+        System.out.println("Nt = " + n);
+        double b2 = alpha * 2 / (c * R);
+        double i = Math.PI * R;
+        double step = 2 * Math.PI * R / Coeffs.pointNumber;
         if (needEvaluation) {
             for (double j = -i; j <= i; j += step) {
                 N = getEvaluationQuality(n, alpha, R, c, Uenv, t, k, eps, j);
                 double U = (Coeffs.getA0(0) + getSum(j, t, N, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
                 Point p = new Point(j, U);
                 solution.add(p);
-                if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
-                    System.out.println("x = " + j + " Ne = " + N);
+                    if (j <= -49.86 && j >= -50.1) {
+                        System.out.println("x = " + -50 + " Ne = " + N);
+                    } else if (j <= 0.1 && j >= -0.1)
+                        System.out.println("x = " + 0 + " Ne = " + N);
             }
-            System.out.println("------------");
+
             controller.onUpdatePoints(solution);
             controller.showN(N);
-        }
-        else{
+        } else {
             for (double j = -i; j <= i; j += step) {
                 double U = (Coeffs.getA0(0) + getSum(j, t, n, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
                 Point p = new Point(j, U);
                 solution.add(p);
                 //if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
-                    //System.out.println(n);
+                //System.out.println(n);
             }
-            System.out.println("-------------");
+
             controller.onUpdatePoints(solution);
             controller.showN(n);
+
         }
+        //System.out.println("--------------------");
     }
 
     public Solution(BaseController controller) {
