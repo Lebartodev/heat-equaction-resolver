@@ -50,6 +50,8 @@ public class Solution {
                 if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
                     System.out.println("Ne = " + N);
             }
+            controller.onUpdatePoints(solution);
+            controller.showN(N);
         }
         else{
             for (double j = -i; j <= i; j += step) {
@@ -59,9 +61,9 @@ public class Solution {
                 //if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
                     //System.out.println(n);
             }
+            controller.onUpdatePoints(solution);
+            controller.showN(n);
         }
-        controller.onUpdatePoints(solution);
-        controller.showN(N);
     }
 
     public Solution(BaseController controller) {
