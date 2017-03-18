@@ -1,8 +1,10 @@
 package controller;
 
+import Model.Explicit;
 import Model.Point;
 import Model.Solution;
 import controller.BaseController;
+import rx.functions.Action1;
 import view.BaseMainView;
 
 
@@ -12,12 +14,12 @@ import java.util.List;
  * Created by Александр on 13.11.2016.
  */
 public class Controller implements BaseController {
-    private Solution solution;
+    private Explicit solution=new Explicit();
 
     private BaseMainView view;
 
     public Controller(BaseMainView view) {
-        solution = new Solution(this);
+        //solution = new Solution(this);
         this.view = view;
             /*public static double c = 1.84;
     public static double alpha = 0.005;
@@ -31,7 +33,9 @@ public class Controller implements BaseController {
 
 
     public void updatePoints(double t,double alpha,double c,double R,double k, double Uenv,double eps,boolean needQuality) {
-        solution.calculateSolution(t,alpha,c,R,k,Uenv,eps,needQuality);
+        solution.calculateSolution(1000,1000,R,1000,alpha,(int)t).subscribe(points -> {
+            onUpdatePoints(points);
+        });
         System.out.println("t = "+ t);
     }
 
