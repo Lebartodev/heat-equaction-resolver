@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class Explicit {
 
-    public Single<List<Point>> calculateSolution(int I, int K, double R, int t, double a, int k) {
+    public Single<List<Point>> calculateSolution(int I, int K, double R, int t, double aK, double c, int k) {
 
         return Single.create(e -> {
-            List<Point> points = Arrays.asList(getExplicitScheme(I, K, R, t, a, k));
+            List<Point> points = Arrays.asList(getExplicitScheme(I, K, R, t, aK, c, k));
             e.onSuccess(points);
         });
     }
@@ -28,15 +28,14 @@ public class Explicit {
      * @param K - Размерность сетки K
      * @param R - Радиус
      * @param t - Максимальное время
-     * @param a - Параметр
      * @param k - Текущее время
      * @return - массив точек для построения графика
      */
-    public Point[] getExplicitScheme(int I, int K, double R, int t, double a, int k) {
-
+    public Point[] getExplicitScheme(int I, int K, double R, int t, double aK, double c, int k) {
+        double a2 = aK / c;
         double hX = (2. * Math.PI * R) / (double) I;
         double hT = (double) t / (double) K;
-        double gamma = (a * a) * hT / (hX * hX);
+        double gamma = (a2) * hT / (hX * hX);
         //double[][] res = new double[i + 1][k + 1];
         Point[] res = new Point[I + 1];
         Point[] tmp = new Point[I + 1];
