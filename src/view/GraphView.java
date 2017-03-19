@@ -10,6 +10,8 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.block.ColorBlock;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.DeviationRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -257,8 +259,18 @@ public class GraphView implements BaseMainView {
             for (Point point : expilPoints)
                 seriesExplit.add(point.getX(), point.getY());
             explitDataset = new XYSeriesCollection(seriesExplit);
+
+
             plot.setDataset(0,xyDataset);
             plot.setDataset(1,explitDataset);
+            DeviationRenderer renderer = new DeviationRenderer(true, false);
+            renderer.setSeriesFillPaint(0, Color.blue);
+            plot.setRenderer(0,renderer);
+            DeviationRenderer renderer2 = new DeviationRenderer(true, false);
+            renderer.setSeriesFillPaint(0, Color.blue);
+            plot.setRenderer(1,renderer2);
+            plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
+            plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.blue);
             plot.setBackgroundPaint(Color.white);
             plot.setDomainGridlinePaint(Color.GRAY);
             plot.setRangeGridlinePaint(Color.GRAY);
