@@ -32,7 +32,7 @@ public class Controller implements BaseController {
 
 
     public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality) {
-        Single.zip(solutionExplicit.calculateSolution(1000, 1000, R, 1000, k, c, (int) t),
+        Single.zip(solutionExplicit.calculateSolution(10000, 10000, R, 10, k, c, (int) t),
                 solution.calculateSolution(t, alpha, c, R, k, Uenv, eps, needQuality), (points, points2) -> {
                     onUpdatePoints(points, points2);
                     return null;
