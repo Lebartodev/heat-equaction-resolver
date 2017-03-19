@@ -1,6 +1,7 @@
 package Model;
 
-import controller.BaseController;
+import rx.Observable;
+import rx.Single;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,6 @@ import static java.lang.Math.*;
 public class Solution {
 
     private List<Point> solution;
-    BaseController controller;
 
     public static double getSum(double x, double t, int N, double k, double c, double R, double Uenv, double alpha) {
 
@@ -26,55 +26,57 @@ public class Solution {
         return res;
     }
 
-    public void calculateSolution(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needEvaluation) {
-        System.out.println("--------------------");
-        solution = new ArrayList<Point>();
-        int N = 0;
-        int n;
-        if (t == 0) {
-            t = 0.1;
-            n = getEvaluation(eps, t, R, k, c, alpha);
-        } else {
-            t++;
-            n = getEvaluation(eps, t, R, k, c, alpha);
-        }
-        System.out.println("Nt = " + n);
-        double b2 = alpha * 2 / (c * R);
-        double i = Math.PI * R;
-        double step = 2 * Math.PI * R / Coeffs.pointNumber;
-        if (needEvaluation) {
-            for (double j = -i; j <= i; j += step) {
-                N = getEvaluationQuality(n, alpha, R, c, Uenv, t, k, eps, j);
-                double U = (Coeffs.getA0(0) + getSum(j, t, N, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
-                Point p = new Point(j, U);
-                solution.add(p);
+    public Single<List<Point>> calculateSolution(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needEvaluation) {
+        return Single.create(e -> {
+            System.out.println("--------------------");
+            solution = new ArrayList<Point>();
+            int N = 0;
+            int n;
+            double tmp_t = t;
+            if (tmp_t == 0) {
+                tmp_t = 0.1;
+                n = getEvaluation(eps, tmp_t, R, k, c, alpha);
+            } else {
+                tmp_t++;
+                n = getEvaluation(eps, tmp_t, R, k, c, alpha);
+            }
+            System.out.println("Nt = " + n);
+            double b2 = alpha * 2 / (c * R);
+            double i = Math.PI * R;
+            double step = 2 * Math.PI * R / Coeffs.pointNumber;
+            if (needEvaluation) {
+                for (double j = -i; j <= i; j += step) {
+                    N = getEvaluationQuality(n, alpha, R, c, Uenv, t, k, eps, j);
+                    double U = (Coeffs.getA0(0) + getSum(j, t, N, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
+                    Point p = new Point(j, U);
+                    solution.add(p);
                     if (j <= -49.86 && j >= -50.1) {
                         System.out.println("x = " + -50 + " Ne = " + N);
                     } else if (j <= 0.1 && j >= -0.1)
                         System.out.println("x = " + 0 + " Ne = " + N);
+                }
+                e.onSuccess(solution);
+                // controller.onUpdatePoints(solution);
+                // controller.showN(N);
+            } else {
+                for (double j = -i; j <= i; j += step) {
+                    double U = (Coeffs.getA0(0) + getSum(j, t, n, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
+                    Point p = new Point(j, U);
+                    solution.add(p);
+                    //if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
+                    //System.out.println(n);
+                }
+                e.onSuccess(solution);
+                // controller.onUpdatePoints(solution);
+                // controller.showN(n);
+
             }
+        });
 
-            controller.onUpdatePoints(solution);
-            controller.showN(N);
-        } else {
-            for (double j = -i; j <= i; j += step) {
-                double U = (Coeffs.getA0(0) + getSum(j, t, n, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
-                Point p = new Point(j, U);
-                solution.add(p);
-                //if ((j <= -49.86 && j >= -50.1) || (j <= 0.1 && j >= -0.1))
-                //System.out.println(n);
-            }
-
-            controller.onUpdatePoints(solution);
-            controller.showN(n);
-
-        }
         //System.out.println("--------------------");
     }
 
-    public Solution(BaseController controller) {
-        this.controller = controller;
-
+    public Solution() {
 
     }
 

@@ -31,8 +31,8 @@ import java.util.List;
  */
 public class GraphView implements BaseMainView {
     private BaseController controller;
-    private XYSeries series;
-    private XYDataset xyDataset;
+    private XYSeries series,seriesExplit;
+    private XYDataset xyDataset,explitDataset;
     private JFreeChart chart;
     private JLabel label;
     private JTextField editC;
@@ -242,7 +242,7 @@ public class GraphView implements BaseMainView {
 
     }
 
-    public void updateGraph(List<Point> points) {
+    public void updateGraph(List<Point> points,List<Point> expilPoints) {
         if (chart != null) {
             XYPlot plot = (XYPlot) chart.getPlot();
             series = new XYSeries("U(x,t)");
@@ -251,12 +251,23 @@ public class GraphView implements BaseMainView {
                 series.add(point.getX(), point.getY());
             xyDataset = new XYSeriesCollection(series);
 
-            plot.setDataset(xyDataset);
+            seriesExplit = new XYSeries("Explit(x,t)");
+
+
+            for (Point point : expilPoints)
+                seriesExplit.add(point.getX(), point.getY());
+            explitDataset = new XYSeriesCollection(seriesExplit);
+            plot.setDataset(0,xyDataset);
+            plot.setDataset(1,explitDataset);
             plot.setBackgroundPaint(Color.white);
             plot.setDomainGridlinePaint(Color.GRAY);
             plot.setRangeGridlinePaint(Color.GRAY);
         } else
             createGraph(points);
+
+
+
+
     }
 
     public void onShow(int n) {

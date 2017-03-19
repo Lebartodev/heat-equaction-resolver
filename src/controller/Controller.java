@@ -3,19 +3,18 @@ package controller;
 import Model.Explicit;
 import Model.Point;
 import Model.Solution;
-import controller.BaseController;
-import rx.functions.Action1;
 import view.BaseMainView;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Александр on 13.11.2016.
  */
 public class Controller implements BaseController {
-    private Explicit solution=new Explicit();
-
+    // private Explicit solution=new Explicit();
+    private Solution solution = new Solution();
+    private Explicit solutionExplicit = new Explicit();
     private BaseMainView view;
 
     public Controller(BaseMainView view) {
@@ -27,20 +26,23 @@ public class Controller implements BaseController {
     public static double R = 25;
     public static double Uenv = 0;
     public static double T = 50;*/
-        updatePoints(0,0.005,1.84,25,0.065,0, 0.0001,false);
+        updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false);
 
     }
 
 
-    public void updatePoints(double t,double alpha,double c,double R,double k, double Uenv,double eps,boolean needQuality) {
-        solution.calculateSolution(1000,1000,R,1000,alpha,(int)t).subscribe(points -> {
-            onUpdatePoints(points);
+    public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality) {
+        solutionExplicit.calculateSolution(1000, 1000, R, 1000, alpha, (int) t).subscribe(points -> {
+            solution.calculateSolution(t, alpha, c, R, k, Uenv, eps, needQuality).subscribe(pointsExplicit -> {
+                onUpdatePoints(points,pointsExplicit);
+            });
         });
-        System.out.println("t = "+ t);
+
+
     }
 
-    public void onUpdatePoints(List<Point> points) {
-        view.updateGraph(points);
+    public void onUpdatePoints(List<Point> points, List<Point> explit) {
+        view.updateGraph(points, explit);
     }
 
     public void showN(int n) {
