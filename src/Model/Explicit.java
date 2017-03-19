@@ -23,6 +23,15 @@ public class Explicit {
 
     }
 
+    /**
+     * @param I - Размерность сетки I
+     * @param K - Размерность сетки K
+     * @param R - Радиус
+     * @param t - Максимальное время
+     * @param a - Параметр
+     * @param k - Текущее время
+     * @return - массив точек для построения графика
+     */
     public Point[] getExplicitScheme(int I, int K, double R, int t, double a, int k) {
         System.out.println("I = "+I+" R= "+R+" t="+t+" a="+a+" k="+k);
 
