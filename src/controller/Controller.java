@@ -3,9 +3,9 @@ package controller;
 import Model.Explicit;
 import Model.Point;
 import Model.Solution;
+import rx.Single;
 import view.BaseMainView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,11 +32,12 @@ public class Controller implements BaseController {
 
 
     public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality) {
-        solutionExplicit.calculateSolution(1000, 1000, R, 1000, k, c, (int) t).subscribe(points -> {
-            solution.calculateSolution(t, alpha, c, R, k, Uenv, eps, needQuality).subscribe(pointsExplicit -> {
-                onUpdatePoints(points,pointsExplicit);
-            });
-        });
+        Single.zip(solutionExplicit.calculateSolution(1000, 1000, R, 1000, k, c, (int) t),
+                solution.calculateSolution(t, alpha, c, R, k, Uenv, eps, needQuality), (points, points2) -> {
+                    onUpdatePoints(points, points2);
+                    return null;
+
+                }).subscribe();
 
 
     }
