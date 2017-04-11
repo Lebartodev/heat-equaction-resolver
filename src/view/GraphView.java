@@ -7,11 +7,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.ColorBlock;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.DeviationRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -33,13 +31,15 @@ import java.util.List;
  */
 public class GraphView implements BaseMainView {
     private BaseController controller;
-    private XYSeries series,seriesExplit;
-    private XYDataset xyDataset,explitDataset;
+    private XYSeries series, seriesExplit;
+    private XYDataset xyDataset, explitDataset;
     private JFreeChart chart;
     private JLabel label;
     private JTextField editC;
     private JTextField editalpha;
     private JTextField editK;
+    private JTextField editKmax;
+    private JTextField editImax;
     private JTextField editR;
     private JTextField editEps;
     private JTextField editUenv;
@@ -70,13 +70,14 @@ public class GraphView implements BaseMainView {
             double k = Double.parseDouble(editK.getText());
             double eps = Double.parseDouble(editEps.getText());
             double alp = Double.parseDouble(editalpha.getText());
-            double  uenv = Double.parseDouble(editUenv.getText());
+            double uenv = Double.parseDouble(editUenv.getText());
+            int Kmax = Integer.parseInt(editKmax.getText());
+            int Imax = Integer.parseInt(editImax.getText());
             boolean q = qualityBox.isSelected();
+            slider.setMaximum(Kmax);
 
-
-            controller.updatePoints(t, alp, c, R, k,uenv,eps,q);
-        }
-        catch (Exception e){
+            controller.updatePoints(t, alp, c, R, k, uenv, eps, q, Kmax, Imax);
+        } catch (Exception e) {
             System.out.println("Exception");
         }
     }
@@ -91,10 +92,12 @@ public class GraphView implements BaseMainView {
         editalpha = new JTextField();
         editC = new JTextField();
         editK = new JTextField();
-        labelN=new JLabel("");
-        qualityBox=new JCheckBox("Quality");
+        labelN = new JLabel("");
+        qualityBox = new JCheckBox("Quality");
         editEps = new JTextField();
         editUenv = new JTextField();
+        editKmax = new JTextField();
+        editImax = new JTextField();
 
         editC.setText("1.84");
         editR.setText("25");
@@ -102,12 +105,16 @@ public class GraphView implements BaseMainView {
         editK.setText("0.065");
         editEps.setText("0.0001");
         editUenv.setText("0");
+        editKmax.setText("1000");
+        editImax.setText("250");
         editC.getDocument().addDocumentListener(editListener);
         editR.getDocument().addDocumentListener(editListener);
         editalpha.getDocument().addDocumentListener(editListener);
         editK.getDocument().addDocumentListener(editListener);
         editEps.getDocument().addDocumentListener(editListener);
         editUenv.getDocument().addDocumentListener(editListener);
+        editKmax.getDocument().addDocumentListener(editListener);
+        editImax.getDocument().addDocumentListener(editListener);
     }
 
     //Этот метод вызывается из контроллера
@@ -134,7 +141,7 @@ public class GraphView implements BaseMainView {
         plot.setRangeGridlinePaint(Color.GRAY);
         NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
         rangeAxis.setAxisLineVisible(true);
-       // rangeAxis.setRange(0, 5);
+        // rangeAxis.setRange(0, 5);
         JFrame frame =
                 new JFrame("MinimalStaticChart");
         //
@@ -149,6 +156,8 @@ public class GraphView implements BaseMainView {
         final JPanel panelK = new JPanel();
         final JPanel panelQ = new JPanel();
         final JPanel panelUenv = new JPanel();
+        final JPanel panelImax = new JPanel();
+        final JPanel panelKmax = new JPanel();
 
         panelR.setLayout(new BoxLayout(panelR, BoxLayout.X_AXIS));
         panelEps.setLayout(new BoxLayout(panelEps, BoxLayout.X_AXIS));
@@ -158,6 +167,8 @@ public class GraphView implements BaseMainView {
         panelK.setLayout(new BoxLayout(panelK, BoxLayout.X_AXIS));
         panelUenv.setLayout(new BoxLayout(panelUenv, BoxLayout.X_AXIS));
         panelQ.setLayout(new BoxLayout(panelQ, BoxLayout.X_AXIS));
+        panelKmax.setLayout(new BoxLayout(panelKmax, BoxLayout.X_AXIS));
+        panelImax.setLayout(new BoxLayout(panelImax, BoxLayout.X_AXIS));
         panel1.setLayout(new GridLayout(1, 2, -1, -1));
         panel2.setLayout(new VerticalLayout());
         panelC.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -166,6 +177,8 @@ public class GraphView implements BaseMainView {
         panelR.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelEps.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelalpha.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelImax.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panelKmax.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelQ.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         //frame.setLayout(new VerticalLayout());
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -176,7 +189,7 @@ public class GraphView implements BaseMainView {
                 JSlider dd = (JSlider) e.getSource();
                 if (!dd.getValueIsAdjusting()) {
                     updatePoints();
-                label.setText("t = "+dd.getValue());
+                    label.setText("t = " + dd.getValue());
                 }
 
 
@@ -223,6 +236,10 @@ public class GraphView implements BaseMainView {
         panelEps.add(editEps);
         panelK.add(new JLabel("K: "));
         panelK.add(editK);
+        panelKmax.add(new JLabel("Kmax: "));
+        panelKmax.add(editKmax);
+        panelImax.add(new JLabel("Imax: "));
+        panelImax.add(editImax);
 
 
         panel2.add(panelC);
@@ -231,20 +248,23 @@ public class GraphView implements BaseMainView {
         panel2.add(panelalpha);
         panel2.add(panelEps);
         panel2.add(panelQ);
+        panel2.add(panelKmax);
+        panel2.add(panelImax);
         panel2.add(label);
+
 
 
         panel2.add(slider);
         panel2.add(labelN);
 
         frame.add(panel1);
-        frame.setSize(1000, 400);
+        frame.setSize(1000, 600);
 
         frame.show();
 
     }
 
-    public void updateGraph(List<Point> points,List<Point> expilPoints) {
+    public void updateGraph(List<Point> points, List<Point> expilPoints) {
         if (chart != null) {
             XYPlot plot = (XYPlot) chart.getPlot();
             series = new XYSeries("U(x,t)");
@@ -261,14 +281,12 @@ public class GraphView implements BaseMainView {
             explitDataset = new XYSeriesCollection(seriesExplit);
 
 
-            plot.setDataset(0,xyDataset);
-            plot.setDataset(1,explitDataset);
+            plot.setDataset(1, xyDataset);
+            plot.setDataset(0, explitDataset);
             DeviationRenderer renderer = new DeviationRenderer(true, false);
-            renderer.setSeriesFillPaint(0, Color.blue);
-            plot.setRenderer(0,renderer);
+            plot.setRenderer(0, renderer);
             DeviationRenderer renderer2 = new DeviationRenderer(true, false);
-            renderer.setSeriesFillPaint(0, Color.blue);
-            plot.setRenderer(1,renderer2);
+            plot.setRenderer(1, renderer2);
             plot.getRendererForDataset(plot.getDataset(0)).setSeriesPaint(0, Color.red);
             plot.getRendererForDataset(plot.getDataset(1)).setSeriesPaint(0, Color.blue);
             plot.setBackgroundPaint(Color.white);
@@ -278,12 +296,10 @@ public class GraphView implements BaseMainView {
             createGraph(points);
 
 
-
-
     }
 
     public void onShow(int n) {
-        labelN.setText("N = "+n);
+        labelN.setText("N = " + n);
 
     }
 }

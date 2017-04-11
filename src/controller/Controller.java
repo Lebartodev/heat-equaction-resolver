@@ -26,15 +26,15 @@ public class Controller implements BaseController {
     public static double R = 25;
     public static double Uenv = 0;
     public static double T = 50;*/
-        updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false);
+        updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 1000, 250);
 
     }
 
 
-    public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality) {
-        Single.zip(solutionExplicit.calculateSolution(10000, 10000, R, 10, k, c, (int) t),
-                solution.calculateSolution(t, alpha, c, R, k, Uenv, eps, needQuality), (points, points2) -> {
-                    onUpdatePoints(points, points2);
+    public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality, int K, int I) {
+        Single.zip(solutionExplicit.calculateSolution(I, K, R, 1000, k, c, (int) t, alpha),
+                solution.calculateSolution(t * ((double) 1000 / (double) K), alpha, c, R, k, Uenv, eps, needQuality, I), (points, points2) -> {
+                    onUpdatePoints(points2, points);
                     return null;
 
                 }).subscribe();

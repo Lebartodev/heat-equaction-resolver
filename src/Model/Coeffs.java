@@ -5,8 +5,6 @@ package Model;
  */
 public class Coeffs {
 
-    public static final double pointNumber = 400;
-
     public static double getA0(double Uenv){
         return 0.5-Uenv;
     }
