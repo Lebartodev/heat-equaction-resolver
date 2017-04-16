@@ -49,7 +49,7 @@ public class Solution {
 
             if(differentEps){
                 //КАРОЧИ ТУТ НАДО ШАГ ПО ВРЕМЕНИ И ШАГ ПО x УМЕНЬШИТЬ
-
+                step/=2.0;
 
             }
             if (needEvaluation) {
@@ -58,10 +58,10 @@ public class Solution {
                     double U = (Coeffs.getA0(0) + getSum(j, t, N, k, c, R, Uenv, alpha)) * Math.exp(-b2 * t);
                     Point p = new Point(j, U);
                     solution.add(p);
-                    if (j <= -49.86 && j >= -50.1) {
+                    /*if (j <= -49.86 && j >= -50.1) {
                         System.out.println("x = " + -50 + " Ne = " + N);
                     } else if (j <= 0.1 && j >= -0.1)
-                        System.out.println("x = " + 0 + " Ne = " + N);
+                        System.out.println("x = " + 0 + " Ne = " + N);*/
                 }
                 e.onSuccess(solution);
                 // controller.onUpdatePoints(solution);
