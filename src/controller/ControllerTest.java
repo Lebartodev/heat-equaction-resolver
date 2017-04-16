@@ -26,14 +26,14 @@ public class ControllerTest {
             public void updateGraph(List<Point> points, List<Point> explit, List<Point> implict) {
                 if (epsNedel.size() == 0) {
                     for (int i = 0; i < points.size(); i++) {
-                        System.out.println("epsDel = "+(points.get(i).getY() - explit.get(i).getY()));
+                        System.out.println("x="+points.get(i).getX()+"epsNedel = "+(points.get(i).getY() - explit.get(i).getY()));
                         epsNedel.add(points.get(i).getY() - explit.get(i).getY());
                     }
                 }
                 else{
                     for (int i = 0; i < points.size(); i++) {
                         //System.out.println(points.get(i).getY() - explit.get(i).getY());
-                        System.out.println("epsNedel = "+(points.get(i).getY() - explit.get(i).getY()));
+                        System.out.println("x="+points.get(i).getX()+"epsDel = "+(points.get(i).getY() - explit.get(i).getY()));
                         epsDel.add(points.get(i).getY() - explit.get(i).getY());
                     }
                 }
