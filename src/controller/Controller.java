@@ -6,6 +6,7 @@ import Model.Solution;
 import rx.Single;
 import view.BaseMainView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,15 +27,24 @@ public class Controller implements BaseController {
     public static double R = 25;
     public static double Uenv = 0;
     public static double T = 50;*/
-        updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 1000, 250);
+        //updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 1000, 250,false);
+
+
+
+        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 80, 16,true);
+        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 320, 32,true);
+        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 64, 1280,true);
 
     }
 
 
-    public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality, int K, int I) {
-        Single.zip(solutionExplicit.calculateSolution(I, K, R, 1000, k, c, (int) t, alpha),
-                solution.calculateSolution(t * ((double) 1000 / (double) K), alpha, c, R, k, Uenv, eps, needQuality, I), (points, points2) -> {
+    public void updatePoints(double t, double alpha, double c, double R, double k, double Uenv, double eps, boolean needQuality, int K, int I,boolean differentEps) {
+        Single.zip(solutionExplicit.calculateSolution(I, K, R, 1000, k, c, (int) t, alpha,differentEps),
+                solution.calculateSolution(t * ((double) 1000 / (double) K), alpha, c, R, k, Uenv, eps, needQuality,I,differentEps), (points, points2) -> {
                     onUpdatePoints(points2, points);
+
+
+
                     return null;
 
                 }).subscribe();
@@ -43,7 +53,7 @@ public class Controller implements BaseController {
     }
 
     public void onUpdatePoints(List<Point> points, List<Point> explit) {
-        view.updateGraph(points, explit);
+        view.updateGraph(points, explit,new ArrayList<>());
     }
 
     public void showN(int n) {

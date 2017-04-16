@@ -23,8 +23,10 @@ import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Александр on 13.11.2016.
@@ -46,6 +48,7 @@ public class GraphView implements BaseMainView {
     private JCheckBox qualityBox;
     private JSlider slider;
     private JLabel labelN;
+    private int maxTime=1000;
 
 
     DocumentListener editListener = new DocumentListener() {
@@ -72,11 +75,22 @@ public class GraphView implements BaseMainView {
             double alp = Double.parseDouble(editalpha.getText());
             double uenv = Double.parseDouble(editUenv.getText());
             int Kmax = Integer.parseInt(editKmax.getText());
+            double hT = (double) 1000 / (double) Kmax;
+
+            maxTime=Kmax;
             int Imax = Integer.parseInt(editImax.getText());
             boolean q = qualityBox.isSelected();
-            slider.setMaximum(Kmax);
+            //slider.setMaximum(Kmax);
 
-            controller.updatePoints(t, alp, c, R, k, uenv, eps, q, Kmax, Imax);
+
+            Hashtable labelTable = new Hashtable();
+            labelTable.put(new Integer(0), new JLabel("0"));
+            labelTable.put(new Integer(maxTime/2), new JLabel(String.valueOf(maxTime/2)));
+            labelTable.put(new Integer(maxTime), new JLabel(String.valueOf(maxTime)));
+            slider.setMaximum(maxTime);
+            slider.setLabelTable(labelTable);
+            label.setText("k = " + t+" ;hT="+hT+" ;t="+t*hT);
+            controller.updatePoints(t, alp, c, R, k, uenv, eps, q, Kmax, Imax,false);
         } catch (Exception e) {
             System.out.println("Exception");
         }
@@ -105,7 +119,7 @@ public class GraphView implements BaseMainView {
         editK.setText("0.065");
         editEps.setText("0.0001");
         editUenv.setText("0");
-        editKmax.setText("1000");
+        editKmax.setText(String.valueOf(maxTime));
         editImax.setText("250");
         editC.getDocument().addDocumentListener(editListener);
         editR.getDocument().addDocumentListener(editListener);
@@ -189,7 +203,7 @@ public class GraphView implements BaseMainView {
                 JSlider dd = (JSlider) e.getSource();
                 if (!dd.getValueIsAdjusting()) {
                     updatePoints();
-                    label.setText("t = " + dd.getValue());
+                    //label.setText("t = " + dd.getValue());
                 }
 
 
@@ -203,8 +217,8 @@ public class GraphView implements BaseMainView {
 
         Hashtable labelTable = new Hashtable();
         labelTable.put(new Integer(0), new JLabel("0"));
-        labelTable.put(new Integer(500), new JLabel("500"));
-        labelTable.put(new Integer(1000), new JLabel("1000"));
+        labelTable.put(new Integer(maxTime/2), new JLabel(String.valueOf(maxTime/2)));
+        labelTable.put(new Integer(maxTime), new JLabel(String.valueOf(maxTime)));
         slider.setLabelTable(labelTable);
 
         slider.setPaintLabels(true);
@@ -264,7 +278,15 @@ public class GraphView implements BaseMainView {
 
     }
 
-    public void updateGraph(List<Point> points, List<Point> expilPoints) {
+    public void updateGraph(List<Point> points, List<Point> expilPoints,List<Point> implicitPoints) {
+
+        System.out.println(points.size());
+        for (int i = 0; i < points.size(); i++) {
+            System.out.println(points.get(i).getY()-expilPoints.get(i).getY());
+
+        }
+
+
         if (chart != null) {
             XYPlot plot = (XYPlot) chart.getPlot();
             series = new XYSeries("U(x,t)");

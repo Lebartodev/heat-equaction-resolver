@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class Explicit {
 
-    public Single<List<Point>> calculateSolution(int I, int K, double R, int t, double aK, double c, int k, double alpha) {
+    public Single<List<Point>> calculateSolution(int I, int K, double R, int t, double aK, double c, int k, double alpha,boolean differentEps) {
 
         return Single.create(e -> {
-            List<Point> points = Arrays.asList(getExplicitScheme(I, K, R, t, aK, c, k, alpha));
+            List<Point> points = Arrays.asList(getExplicitScheme(I, K, R, t, aK, c, k, alpha,differentEps));
             e.onSuccess(points);
         });
     }
@@ -29,13 +29,26 @@ public class Explicit {
      * @param R - Радиус
      * @param t - Максимальное время
      * @param k - Текущее время
+     * @param differentEps - Eps (hX/2,hT/4)
      * @return - массив точек для построения графика
      */
-    public Point[] getExplicitScheme(int I, int K, double R, int t, double aK, double c, int k, double alpha) {
+    public Point[] getExplicitScheme(int I, int K, double R, int t, double aK, double c, int k, double alpha, boolean differentEps) {
         double b2 = alpha * 2 / (c * R);
         double a2 = aK / c;
         double hX = (2. * Math.PI * R) / (double) I;
         double hT = (double) t / (double) K;
+
+        if(differentEps)
+        {
+            //Уменьшаем шаги => надо увеличить сетку.
+            hX/=2.0;
+            hT/=4.0;
+            I*=2.0;
+            k*=4.0;
+            //K*=4.0;
+
+        }
+        System.out.println("hT="+hT);
         double gamma = (a2) * hT / (hX * hX);
         //double[][] res = new double[i + 1][k + 1];
         Point[] res = new Point[I + 1];

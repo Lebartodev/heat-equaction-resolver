@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface BaseMainView {
     void createGraph(List<Point> points);
-    void updateGraph(List<Point> points,List<Point> explit);
+    void updateGraph(List<Point> points,List<Point> explit,List<Point> implict);
     void onShow(int n);
 
 }
