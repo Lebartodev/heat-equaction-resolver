@@ -28,7 +28,7 @@ public class Solution {
 
     public Single<List<Point>> calculateSolution(double t, double alpha, double c,
                                                  double R, double k, double Uenv,
-                                                 double eps, boolean needEvaluation, int I,boolean differentEps) {
+                                                 double eps, boolean needEvaluation, int I) {
         return Single.create(e -> {
             System.out.println("--------------------");
             solution = new ArrayList<Point>();
@@ -47,11 +47,6 @@ public class Solution {
             double i = Math.PI * R;
             double step = 2 * Math.PI * R / I;
 
-            if(differentEps){
-                //КАРОЧИ ТУТ НАДО ШАГ ПО ВРЕМЕНИ И ШАГ ПО x УМЕНЬШИТЬ
-                step/=2.0;
-
-            }
             if (needEvaluation) {
                 for (double j = -i; j <= i; j += step) {
                     N = getEvaluationQuality(n, alpha, R, c, Uenv, t, k, eps, j);

@@ -280,13 +280,18 @@ public class GraphView implements BaseMainView {
 
     public void updateGraph(List<Point> points, List<Point> expilPoints,List<Point> implicitPoints) {
 
-        System.out.println(points.size());
-        for (int i = 0; i < points.size(); i++) {
-            System.out.println(points.get(i).getY()-expilPoints.get(i).getY());
+
+        System.out.println("sizepoints: "+points.size());
+       for (int i = 0; i < points.size(); i++) {
+           System.out.println("x="+points.get(i).getX()+" y="+points.get(i).getY());
 
         }
 
+        System.out.println("size: "+expilPoints.size());
+        for (int i = 0; i < expilPoints.size(); i++) {
+            System.out.println("x="+expilPoints.get(i).getX()+" y="+expilPoints.get(i).getY());
 
+        }
         if (chart != null) {
             XYPlot plot = (XYPlot) chart.getPlot();
             series = new XYSeries("U(x,t)");
