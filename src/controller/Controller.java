@@ -19,21 +19,9 @@ public class Controller implements BaseController {
     private BaseMainView view;
 
     public Controller(BaseMainView view) {
-        //solution = new Solution(this);
         this.view = view;
-            /*public static double c = 1.84;
-    public static double alpha = 0.005;
-    public static double k = 0.065;
-    public static double R = 25;
-    public static double Uenv = 0;
-    public static double T = 50;*/
-        updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 1000, 250,false);
-
-
-
-        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 80, 16,true);
-        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 320, 32,true);
-        //updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 64, 1280,true);
+        //Чтобы заработало раскоммить
+        //updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 100, 25,false);
 
     }
 

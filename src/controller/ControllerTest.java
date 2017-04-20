@@ -13,9 +13,9 @@ import java.util.List;
 public class ControllerTest {
     @Test
     public void updatePoints() throws Exception {
-
-        List<Double> epsDel = new ArrayList<>();
-        List<Double> epsNedel = new ArrayList<>();
+         int I = 64;
+        int K=1280;
+        int Xk = I/2+5;
         Controller controller = new Controller(new BaseMainView() {
             @Override
             public void createGraph(List<Point> points) {
@@ -24,24 +24,8 @@ public class ControllerTest {
 
             @Override
             public void updateGraph(List<Point> points, List<Point> explit, List<Point> implict) {
-                if (epsNedel.size() == 0) {
-                    for (int i = 0; i < points.size(); i++) {
-                        System.out.println("x=" + points.get(i).getX() + " epsNedel = " + (points.get(i).getY() - explit.get(i).getY()));
-                        epsNedel.add(points.get(i).getY() - explit.get(i).getY());
-                    }
-                } else {
-                    for (int i = 0; i < points.size(); i++) {
-                        //System.out.println(points.get(i).getY() - explit.get(i).getY());
-                        System.out.println("x=" + points.get(i).getX() + " epsDel = " + (points.get(i).getY() - explit.get(i).getY()));
-                        epsDel.add(points.get(i).getY() - explit.get(i).getY());
-                    }
-                }
-                if (epsDel.size() > 0 && epsNedel.size() > 0) {
-                    for (int i = 0; i < epsNedel.size(); i++) {
-                        //System.out.println(points.get(i).getY() - explit.get(i).getY());
-                        System.out.println("e/e = " + epsNedel.get(i) / epsDel.get(i * 2));
-                    }
-                }
+                System.out.println("Eps для х= "+points.get(Xk).getX()+" | "+explit.get(Xk).getX()+"   :\n"+(points.get(Xk).getY()-explit.get(Xk).getY()));
+
             }
 
             @Override
@@ -49,8 +33,25 @@ public class ControllerTest {
 
             }
         });
-        controller.updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, 1000, 250, false);
-        controller.updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, 1000, 250, true);
+        Controller controller2 = new Controller(new BaseMainView() {
+            @Override
+            public void createGraph(List<Point> points) {
+
+            }
+
+            @Override
+            public void updateGraph(List<Point> points, List<Point> explit, List<Point> implict) {
+                System.out.println("Eps для х= "+points.get(Xk*2).getX()+" | "+explit.get(Xk*2).getX()+"   :\n"+(points.get(Xk*2).getY()-explit.get(Xk*2).getY()));
+
+            }
+
+            @Override
+            public void onShow(int n) {
+
+            }
+        });
+        controller.updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, K, I, false);
+        controller2.updatePoints(400, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, K, I, true);
     }
 
 }

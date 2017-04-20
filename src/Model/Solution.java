@@ -45,7 +45,7 @@ public class Solution {
             System.out.println("Nt = " + n);
             double b2 = alpha * 2 / (c * R);
             double i = Math.PI * R;
-            double step = 2 * Math.PI * R / I;
+            double step = 2. * Math.PI * R / I;
 
             if (needEvaluation) {
                 for (double j = -i; j <= i; j += step) {

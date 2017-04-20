@@ -66,7 +66,7 @@ public class Explicit {
     }
 
     public double getZeroFunc(double x, double R) {
-        if ((x > (-Math.PI * R) / 2) && (x < (Math.PI * R) / 2))
+        if ((x >= (-Math.PI * R) / 2.-0.001) && (x <= (Math.PI * R) / 2.+0.001))
             return 1;
         else
             return 0;
