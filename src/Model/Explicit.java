@@ -38,13 +38,15 @@ public class Explicit {
         double hX = (2. * Math.PI * R) / (double) I;
         double hT = (double) t / (double) K;
 
+        System.out.println("---------explicit-----------");
+        System.out.println("t= "+(k*hT)+"ht= " + hT + "  hX= " + hX );
+
 
         System.out.println("hT="+hT);
         double gamma = (a2) * hT / (hX * hX);
         //double[][] res = new double[i + 1][k + 1];
         Point[] res = new Point[I + 1];
         Point[] tmp = new Point[I + 1];
-        System.out.println("ht= " + hT + "  hX= " + hX + " gamma=" + gamma);
         for (int j = 0; j < I + 1; j++) {
             tmp[j] = new Point(-Math.PI * R + j * hX, getZeroFunc(-Math.PI * R + j * hX, R));
         }

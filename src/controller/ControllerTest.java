@@ -14,6 +14,7 @@ public class ControllerTest {
     @Test
     public void updatePoints() throws Exception {
          int I = 64;
+        double epsDel,epsNedel;
         int K=1280;
         int Xk = I/2+5;
         Controller controller = new Controller(new BaseMainView() {
@@ -51,7 +52,7 @@ public class ControllerTest {
             }
         });
         controller.updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, K, I, false);
-        controller2.updatePoints(400, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, K, I, true);
+        controller2.updatePoints(100, 0.005, 1.84, 25, 0.065, 0, 0.0001, true, K, I, true);
     }
 
 }

@@ -21,7 +21,7 @@ public class Controller implements BaseController {
     public Controller(BaseMainView view) {
         this.view = view;
         //Чтобы заработало раскоммить
-        //updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 100, 25,false);
+      //  updatePoints(0, 0.005, 1.84, 25, 0.065, 0, 0.0001, false, 100, 25,false);
 
     }
 

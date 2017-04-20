@@ -30,7 +30,8 @@ public class Solution {
                                                  double R, double k, double Uenv,
                                                  double eps, boolean needEvaluation, int I) {
         return Single.create(e -> {
-            System.out.println("--------------------");
+            System.out.println("---------solution-----------");
+            System.out.println("t= "+t);
             solution = new ArrayList<Point>();
             int N = 0;
             int n;
@@ -42,7 +43,6 @@ public class Solution {
                 tmp_t++;
                 n = getEvaluation(eps, tmp_t, R, k, c, alpha);
             }
-            System.out.println("Nt = " + n);
             double b2 = alpha * 2 / (c * R);
             double i = Math.PI * R;
             double step = 2. * Math.PI * R / I;
